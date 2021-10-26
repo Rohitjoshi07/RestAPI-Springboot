@@ -18,7 +18,7 @@ public class UserAuthController {
    
 	@Autowired
 	UserAuthService userauthser;
-
+	
 
   @GetMapping("/userAuth")
   public List<UserAuthentication> getAllUsers(){
