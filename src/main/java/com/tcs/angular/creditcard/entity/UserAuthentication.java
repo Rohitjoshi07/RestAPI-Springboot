@@ -4,12 +4,15 @@ public class UserAuthentication {
    public String email;
    public String name;
    public String password;
+
+
 public UserAuthentication(String email, String name, String password) {
 	super();
 	this.email = email;
 	this.name = name;
 	this.password = password;
 }
+
 public String getEmail() {
 	return email;
 }
