@@ -3,6 +3,7 @@ package com.tcs.angular.creditcard.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,7 +29,7 @@ public class UserAuthController {
   @GetMapping("/userAuth/{email}")
   public UserAuthentication getUser(@PathVariable("email") String email)
   {
-	  return this.userauthser.getUser(email);
+	  return userauthser.getUserById(email);
   }
 	
   @PostMapping("/userAuth")
@@ -43,7 +44,14 @@ public class UserAuthController {
 	  return this.userauthser.updateUser(user);
 	  
   }
-	
+  
+  @DeleteMapping("/userAuth/{email}")
+  public UserAuthentication deleteUser(@PathVariable("email") String email)
+  {
+	  return this.userauthser.deleteUser(email);
+  }
+  
+ 
 }
 
 

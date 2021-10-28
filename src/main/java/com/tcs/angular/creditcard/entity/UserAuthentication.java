@@ -1,8 +1,20 @@
 package com.tcs.angular.creditcard.entity;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="UserAuthentication")
 public class UserAuthentication {
+	
+   @Id
    public String email;
+   
+   @Column(name="Name")
    public String name;
+   @Column(name="Password")
    public String password;
 
 
@@ -32,10 +44,7 @@ public void setPassword(String password) {
 	this.password = password;
 }
 
-@Override
-public String toString() {
-	return "UserAuthentication [email=" + email + ", name=" + name + ", password=" + password + "]";
-}
+
 public UserAuthentication() {
 	super();
 	// TODO Auto-generated constructor stub

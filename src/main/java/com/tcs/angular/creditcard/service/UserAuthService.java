@@ -1,61 +1,70 @@
 package com.tcs.angular.creditcard.service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.tcs.angular.creditcard.entity.*;
+import com.tcs.angular.creditcard.exceptions.UserAlreadyExistException;
+import com.tcs.angular.creditcard.exceptions.UserNotFound;
+import com.tcs.angular.creditcard.exceptions.UserNotFoundException;
+import com.tcs.angular.creditcard.repository.UserAuthRepo;
 
 @Service
 public class UserAuthService {
 	
-	List<UserAuthentication> userAuthList=new ArrayList<>(Arrays.asList(
-			new UserAuthentication("gadekaraavi@gmail.com","Avinash","Avinash123"),
-			new UserAuthentication("sarthakhejib@gmail.com","Sarthak","Sarthak123"),
-			new UserAuthentication("rohitjoshi@gmail.com","Rohit","Rohit1234")
-			)
-			);
+	@Autowired
+	private UserAuthRepo userAuthRepo;
+
 
 	public List<UserAuthentication> getAllUsers() {
 		
-		return userAuthList;
+		userAuthRepo.save(new UserAuthentication("abc@gmail.com","xyzabc","abc123"));
+		return userAuthRepo.findAll();
 	}
 
-	public UserAuthentication getUser(String email) {
-		UserAuthentication us = null;
-		 for(UserAuthentication userauth : userAuthList)
-	 {
-			if(userauth.getEmail().equals(email) ) 
-	  {
-				us = userauth;
-				break;
-	  }
-	}
-    return us;
-	
+	public UserAuthentication getUserById(String email) {
+	 
+		if(!userAuthRepo.existsById(email))
+		{
+			throw new UserNotFound();
+		}
+		else
+		{
+			return userAuthRepo.findById(email).get();
+		}
 	}
 
 	public UserAuthentication addUser(UserAuthentication user) {
-		userAuthList.add(user);
-		return user;
+		if(userAuthRepo.existsById(user.getEmail()))
+		{
+			throw new UserAlreadyExistException();
+		}
+		else {
+		userAuthRepo.save(user);
+		return user;}
 	}
 
 	public UserAuthentication updateUser(UserAuthentication user) {
 		
-		UserAuthentication us = null;
-		 for(UserAuthentication userauth : userAuthList)
-	 {
-			if(userauth.getEmail().equals(user.getEmail()) ) 
-	  {
-			userauth.setName(user.getName());
-			userauth.setPassword(user.getPassword());
-			us = user;
-			break;
-	  }
+	   userAuthRepo.save(user);
+	  return user;
 	}
-    return us;
+
+	public UserAuthentication deleteUser(String email) {
+		UserAuthentication user;
+		if(!userAuthRepo.existsById(email))
+		{
+			throw new UserNotFound();
+		}
+		else
+		{   
+			user = userAuthRepo.findById(email).get();
+		    userAuthRepo.deleteById(email);
+		    return user;
+		}
+	   
 	}
 
 }
