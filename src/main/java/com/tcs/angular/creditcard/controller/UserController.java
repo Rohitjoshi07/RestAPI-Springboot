@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 
 import java.util.List;
+import java.util.Optional;
+
 import com.tcs.angular.creditcard.service.UserService;
 import com.tcs.angular.creditcard.entity.UserDetails;
 import com.tcs.angular.creditcard.exceptions.UserNotFoundException;
@@ -27,18 +29,17 @@ public class UserController {
 		return service.getAllUsers();
 	}
 
-	@GetMapping("/user/{userName}")
-	public UserDetails getAnUser(@PathVariable("userName") String userName ) {
-		if(userName.equals(null))
-			throw new UserNotFoundException();
-		return service.getAnUserByUsername(userName);
+	@GetMapping("/user/{email}")
+	public UserDetails getAnUser(@PathVariable("email") String email ) {
+	
+		return service.getAnUser(email);
 	}
 
-	@DeleteMapping("/user/{userName}")
-	public void deleteAnUser(@PathVariable("userName") String userName) {
-		if(userName.equals(null))
+	@DeleteMapping("/user/{email}")
+	public void deleteAnUser(@PathVariable("email") String email) {
+		if(email.equals(null))
 			throw new UserNotFoundException();
-		service.deleteAnUser(userName);		
+		service.deleteAnUser(email);		
 	}
 
 	@PostMapping("/user")
@@ -47,9 +48,8 @@ public class UserController {
 	}
 
 	@PutMapping("/user")
-	public void updateUser(@RequestBody UserDetails user, 
-			@PathVariable("userName") String userName ){
-		service.updateUser(userName, user);
+	public void updateUser(@RequestBody UserDetails user){
+		service.updateUser(user);
 	}
 
 

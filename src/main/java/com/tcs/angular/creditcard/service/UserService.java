@@ -1,65 +1,70 @@
 package com.tcs.angular.creditcard.service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.tcs.angular.creditcard.exceptions.*;
+import com.tcs.angular.creditcard.repository.UserDetailsRepo;
 import com.tcs.angular.creditcard.entity.UserDetails;
 
 @Service
 public class UserService {
 
-	List<UserDetails> list=new ArrayList<>(Arrays.asList(
-			new UserDetails("Sarthak","Sarthak123","Sarthak.hejib@gmail.com","123","121224"),
-			new UserDetails("User","User123","demouser@gmail.com","1090923","1112233"),
-			new UserDetails("Xyz","xyz23","xyz@gmail.com","678","12090909866"))
-			);
+	@Autowired
+	UserDetailsRepo userRepo;
 
 	public List<UserDetails> getAllUsers(){
-		return list;
-	}
-
-	public UserDetails getAnUserByUsername(String username) {
-//		UserDetails	user=(UserDetails) list.stream().filter(p->p.getUserName().equals(username)).map(p->p).collect(Collectors.toList());
-//		return user;		
-		
-		UserDetails us = null;
-		for(UserDetails user : list)
-		{
-			if(user.getUserName().equals(username))
-				{us = user;
-				break;
-				}
-				
-		}
-		return us;
-	}
-
-	public void deleteAnUser(String username) {
-		if(username.equals(null))
-			throw new UserNotFoundException();
-		list.removeIf(p->p.getUserName().equals(username));
-	}
-
-	public void addAnUser(UserDetails user)  {
-		//if(user.getName().isBlank() || user.getUserName().isBlank()||	user.getEmail().isBlank() || user.getMobileNumber().isBlank())
-	//	throw new EmptyInputException();
-		list.add(user);
+		userRepo.save(new UserDetails("Avinash","gadekaraavi@gmail.com","06/11/1997", "7040753196" ,"BCDF4325D","123456782345",2,"raje sambhaji nagar"));
+		  return userRepo.findAll();
 	}
 	
-	public void updateUser(String userName, UserDetails user) {
-		int count=0;
-		for(UserDetails c:list) {
-			if(c.getUserName().equals(userName)) {
-				list.set(count, user);
-			}
-			count++;
+	public UserDetails getAnUser(String email) {
+		
+		if(!userRepo.existsById(email))
+		{
+			throw new UserNotFound();
+		}
+		else
+		{
+			return userRepo.findById(email).get();
 		}
 	}
 
+	public void deleteAnUser(String email) {
+		
+		if(!userRepo.existsById(email))
+		{
+			throw new UserNotFound();
+		}
+		else
+		{   
+		    userRepo.deleteById(email);
+		}
+	}
 
+	public void addAnUser(UserDetails user){
+		if(user.getName().isEmpty() || 
+				 user.getName().isEmpty() ||
+				 user.getEmail().isEmpty() || 
+				 user.getAadharNumber().isEmpty() || 
+				 user.getDob().isEmpty() ||
+				 user.getPanNumber().isEmpty() || 
+				 user.getUserAddress().isEmpty())                 
+		throw new EmptyInputException();
+		if(userRepo.existsById(user.getEmail()))
+		{
+			throw new UserAlreadyExistException();
+		}
+		else {
+		userRepo.save(user);
+		}
+	
+	}
+	
+	public void updateUser(UserDetails user) {
+		userRepo.save(user);
+	}
 }
