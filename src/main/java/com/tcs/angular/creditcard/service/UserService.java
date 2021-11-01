@@ -17,7 +17,7 @@ public class UserService {
 	UserDetailsRepo userRepo;
 
 	public List<UserDetails> getAllUsers(){
-		userRepo.save(new UserDetails("Avinash","gadekaraavi@gmail.com","06/11/1997", "7040753196" ,"BCDF4325D","123456782345",2,"raje sambhaji nagar"));
+		// userRepo.save(new UserDetails("Avinash","gadekaraavi@gmail.com","06/11/1997", "7040753196" ,"BCDF4325D","123456782345",2,"raje sambhaji nagar"));
 		  return userRepo.findAll();
 	}
 	
