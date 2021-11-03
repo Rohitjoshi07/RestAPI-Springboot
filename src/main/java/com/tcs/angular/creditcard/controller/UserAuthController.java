@@ -2,6 +2,7 @@ package com.tcs.angular.creditcard.controller;
 
 import java.util.List;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,43 +10,50 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.tcs.angular.creditcard.entity.*;
 import com.tcs.angular.creditcard.service.*;
 
-@RestController
+@RestController()
+@RequestMapping("/userAuth")
 public class UserAuthController {
    
 	@Autowired
 	UserAuthService userauthser;
 	
 
-  @GetMapping("/userAuth")
+  @GetMapping("/")
   public List<UserAuthentication> getAllUsers(){
 		return userauthser.getAllUsers();
 	}
  
-  @GetMapping("/userAuth/{email}")
+  @GetMapping("/{email}")
   public UserAuthentication getUser(@PathVariable("email") String email)
   {
 	  return userauthser.getUserById(email);
   }
-	
-  @PostMapping("/userAuth")
-  public UserAuthentication addUser(@RequestBody UserAuthentication user)
+  @PostMapping("/login")
+  public Response loginUser( @RequestBody UserAuthentication user)
   {
-	  return this.userauthser.addUser(user);
+	  
+	  return userauthser.verifyUser(user);
+  }
+  @PostMapping("/register")
+  public Response addUser(@RequestBody UserAuthentication user)
+  {
+	  return this.userauthser.verifyAddUser(user);
   }
   
-  @PutMapping("/userAuth")
+  @PutMapping("/")
   public UserAuthentication updateUser(@RequestBody UserAuthentication user)
   {
 	  return this.userauthser.updateUser(user);
 	  
   }
   
-  @DeleteMapping("/userAuth/{email}")
+  @DeleteMapping("/{email}")
   public UserAuthentication deleteUser(@PathVariable("email") String email)
   {
 	  return this.userauthser.deleteUser(email);

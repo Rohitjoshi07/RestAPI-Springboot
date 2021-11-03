@@ -6,9 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.tcs.angular.creditcard.entity.*;
-import com.tcs.angular.creditcard.exceptions.UserAlreadyExistException;
-import com.tcs.angular.creditcard.exceptions.UserNotFound;
-import com.tcs.angular.creditcard.exceptions.UserNotFoundException;
+import com.tcs.angular.creditcard.exceptions.*;
 import com.tcs.angular.creditcard.repository.UserAuthRepo;
 
 @Service
@@ -36,14 +34,15 @@ public class UserAuthService {
 		}
 	}
 
-	public UserAuthentication addUser(UserAuthentication user) {
+	public Response verifyAddUser(UserAuthentication user) {
 		if(userAuthRepo.existsById(user.getEmail()))
 		{
-			throw new UserAlreadyExistException();
+			return new Response("Bad-Request","User Already Exit");
 		}
 		else {
 		userAuthRepo.save(user);
-		return user;}
+		return new Response("ok","User Added Successfully");
+		}
 	}
 
 	public UserAuthentication updateUser(UserAuthentication user) {
@@ -65,6 +64,31 @@ public class UserAuthService {
 		    return user;
 		}
 	   
+	}
+
+	public Response verifyUser(UserAuthentication user) {
+		Response response = new Response(null,null);
+		if(!userAuthRepo.existsById(user.getEmail()))
+		{
+			response.setStatus("Bad-Request");
+			response.setMessage(user.getEmail() + "Not exist...Register now.");
+		}
+		else {
+			UserAuthentication user2 = userAuthRepo.getById(user.getEmail());
+			if(user2.getPassword().equals(user.getPassword()))
+			{
+				response.setStatus("ok");
+				response.setMessage("login successfully");
+			}
+			else {
+				
+				response.setStatus("Bad-request");
+				response.setMessage("Invalid Password");
+			}
+			
+		}
+		
+		return response;
 	}
 
 }
