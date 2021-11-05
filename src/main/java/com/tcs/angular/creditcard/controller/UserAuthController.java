@@ -4,6 +4,7 @@ import java.util.List;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,6 +18,7 @@ import com.tcs.angular.creditcard.entity.*;
 import com.tcs.angular.creditcard.service.*;
 
 @RestController()
+@CrossOrigin
 @RequestMapping("/userAuth")
 public class UserAuthController {
    
@@ -24,7 +26,7 @@ public class UserAuthController {
 	UserAuthService userauthser;
 	
 
-  @GetMapping("/")
+  @GetMapping("")
   public List<UserAuthentication> getAllUsers(){
 		return userauthser.getAllUsers();
 	}
@@ -46,7 +48,7 @@ public class UserAuthController {
 	  return this.userauthser.verifyAddUser(user);
   }
   
-  @PutMapping("/")
+  @PutMapping("")
   public UserAuthentication updateUser(@RequestBody UserAuthentication user)
   {
 	  return this.userauthser.updateUser(user);
