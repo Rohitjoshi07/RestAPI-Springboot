@@ -1,14 +1,16 @@
 package com.tcs.angular.creditcard.service;
 
-import java.time.YearMonth;
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.tcs.angular.creditcard.entity.CreditCard;
-import com.tcs.angular.creditcard.exceptions.UserNotFoundException;
+import com.tcs.angular.creditcard.entity.Response;
+import com.tcs.angular.creditcard.entity.UserDetails;
 import com.tcs.angular.creditcard.repository.CreditCardRepo;
+
 
 @Service
 public class CreditCardService {
@@ -16,31 +18,189 @@ public class CreditCardService {
 	@Autowired
 	CreditCardRepo cardRepo;
 	
-	public String addCard(CreditCard carddata) {
+//	public Response addCard(CreditCard carddata) {
+//		
+//		cardRepo.save(carddata);
+//		Response res = new Response("true","card added!");
+//		return res;
+//
+//	}
+//	
+	
+	public Response verifyUser(String userid, String cardType) {
+		CreditCard[] data = cardRepo.findAllByuserid(userid);
 		
-		cardRepo.save(carddata);
-		return "Details Saved";
+		if (data.length ==0) {
+			Response res = new Response("true","No cards found!");
+			return res;
+		}
+		else {
+			for (CreditCard creditCard : data) {
+				if (creditCard.getType().equals(cardType)) {
+					Response res = new Response("false",cardType+" card has already been issued!");
+					return res;
+				}
+			}
+			Response res = new Response("true","No "+cardType+" cards found!");
+			return res;
+		}
+
 	}
 	
-	public List<CreditCard> getAll(){
-		Byte b1 = 123;
-		Byte b2 = 12;
-		YearMonth ym = YearMonth.now();
-		cardRepo.save(new CreditCard("BQWPJ1936N", "Rohit Joshi", b1, "VISA", "ambica vihar, haldwani", b2, ym));
+	public Response checkUserforCards(String userid) {
+		CreditCard[] data = cardRepo.findAllByuserid(userid);
+		StringBuffer cards = new StringBuffer();
 		
-		List<CreditCard> data = cardRepo.findAll();
-		if (data.isEmpty()){
-			throw new UserNotFoundException();
+		if (data.length ==0) {
+			Response res = new Response("true","No cards found!");
+			return res;
 		}
-		return data;
-	}
-	public String verifyUserByUserid(String userid) {
-		CreditCard id = cardRepo.getById(userid);
-		if (id.equals(null)) {
-			throw new UserNotFoundException();
+		else {
+			
+			
+			for (CreditCard creditCard : data) {
+				cards.append(creditCard.getType()+", ");
+				}
+			}
+		
+		
+			Response res = new Response("true",cards.toString());
+			return res;
 		}
-		return id.getName();
+
+	public Response generateCardForUser(UserDetails userdetails, String cardType) {
+		
+		String userid = userdetails.getPanNumber();
+		String[] name = userdetails.getName().split(" ");
+		String fname= name[0];
+		String lname="";
+		if (name.length==2) {
+			lname =  name[1];
+		}
+		
+		int srange = userdetails.getSalaryRange();
+		String baddress = userdetails.getUserAddress();
+		
+		//validate for given card
+		Response chkres = verifyUser(userid, cardType);
+		if (chkres.getMessage().equals(cardType+" card has already been issued!")) {
+			return chkres;
+		}
+		
+		//generate card process
+		System.out.println(userid+" "+fname +" "+lname+" "+srange+" "+baddress);
+		
+		if (cardType.equals("ACE") && (srange==1 || srange==3 || srange==2 || srange==4)) {
+			
+			//generate card
+			cardProcessService cardprocess = cardProcessService.ACE;
+			String cardno= cardprocess.generateNumber();
+			byte[] cardnoEnc = Encryption.encrypt(Encryption.stringToByte(cardno));
+			
+			String cardexpiry = cardprocess.generateExpiry();
+			
+			String cardcvv =  cardprocess.generateCVV();
+			byte[] cardcvvEnc = Encryption.encrypt(Encryption.stringToByte(cardcvv));
+			
+			//dummycheck
+			System.out.println("cardno: "+cardno+" cardexpiry: "+cardexpiry+" cardcvv: "+cardcvv);
+			//store card
+			CreditCard carddetails = new CreditCard(cardnoEnc, userid, fname, lname, cardType, baddress,cardcvvEnc, cardexpiry);
+			
+			//add card in db
+			cardRepo.save(carddetails);
+			Response res = new Response("true","ACE card added!");
+			return res;
+			
+		}
+		else if (cardType.equals("MAGNUS") && (srange!=1)) {
+			
+			//generate card
+			cardProcessService cardprocess = cardProcessService.MAGNUS;
+			String cardno= cardprocess.generateNumber();
+			byte[] cardnoEnc = Encryption.encrypt(Encryption.stringToByte(cardno));
+			
+			String cardexpiry = cardprocess.generateExpiry();
+			
+			String cardcvv =  cardprocess.generateCVV();
+			byte[] cardcvvEnc = Encryption.encrypt(Encryption.stringToByte(cardcvv));
+			
+			//dummycheck
+			System.out.println("cardno: "+cardno+" cardexpiry: "+cardexpiry+" cardcvv: "+cardcvv);
+			//store card
+			CreditCard carddetails = new CreditCard(cardnoEnc, userid, fname, lname, cardType, baddress,cardcvvEnc, cardexpiry);
+			
+			//add card in db
+			cardRepo.save(carddetails);
+			Response res = new Response("true","MAGNUS card added!");
+			return res;
+			
+		}
+		else if (cardType.equals("PLATINUM") && (srange==4 || srange==3)) {
+			
+			//generate card
+			cardProcessService cardprocess = cardProcessService.PLATINUM;
+			String cardno= cardprocess.generateNumber();
+			byte[] cardnoEnc = Encryption.encrypt(Encryption.stringToByte(cardno));
+			
+			String cardexpiry = cardprocess.generateExpiry();
+			
+			String cardcvv =  cardprocess.generateCVV();
+			byte[] cardcvvEnc = Encryption.encrypt(Encryption.stringToByte(cardcvv));
+			
+			
+			//dummycheck
+			System.out.println("cardno: "+cardno+" cardexpiry: "+cardexpiry+" cardcvv: "+cardcvv);
+			
+			//store card
+			CreditCard carddetails = new CreditCard(cardnoEnc, userid, fname, lname, cardType, baddress,cardcvvEnc, cardexpiry);
+			
+			//add card in db
+			cardRepo.save(carddetails);
+			Response res = new Response("true","PLATINUM card added!");
+			return res;
+			
+		}
+		else if (cardType.equals("NEO") && (srange==4)) {
+			
+			//generate card
+			cardProcessService cardprocess = cardProcessService.NEO;
+			String cardno= cardprocess.generateNumber();
+			byte[] cardnoEnc = Encryption.encrypt(Encryption.stringToByte(cardno));
+			
+			String cardexpiry = cardprocess.generateExpiry();
+			
+			String cardcvv =  cardprocess.generateCVV();
+			byte[] cardcvvEnc = Encryption.encrypt(Encryption.stringToByte(cardcvv));
+			
+			//dummycheck
+			System.out.println("cardno: "+cardno+" cardexpiry: "+cardexpiry+" cardcvv: "+cardcvv);
+			
+			//store card
+			CreditCard carddetails = new CreditCard(cardnoEnc, userid, fname, lname, cardType, baddress,cardcvvEnc, cardexpiry);
+			
+			//add card in db
+			cardRepo.save(carddetails);
+			Response res = new Response("true","NEO card added!");
+			return res;
+			
+		}
+		else {
+			
+			Response res = new Response("false","This card is not available for user!");
+			return res;
+		}
 	}
-	
 	
 }
+//	public List<CreditCard> getAll(){
+//
+//		List<CreditCard> data = cardRepo.findAll();
+//		if (data.isEmpty()){
+//			throw new UserNotFoundException();
+//		}
+//		return data;
+//	}
+
+
+

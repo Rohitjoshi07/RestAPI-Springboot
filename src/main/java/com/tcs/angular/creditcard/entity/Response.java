@@ -4,6 +4,7 @@ public class Response {
 
 	String status;
 	String message ;
+	
 	public Response(String status, String message) {
 		super();
 		this.status = status;

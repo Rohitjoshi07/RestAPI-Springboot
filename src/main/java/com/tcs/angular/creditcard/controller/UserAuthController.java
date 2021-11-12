@@ -28,6 +28,13 @@ public class UserAuthController {
 
   @GetMapping("")
   public List<UserAuthentication> getAllUsers(){
+	  
+//		String text = "5196544571334130";
+//		byte[] enc  = Encryption.encrypt(Encryption.stringToByte(text));
+//		byte[] dec =Encryption.decrypt(enc);
+//		System.out.println("Encrypted: "+enc+"\nLength:"+enc.length);
+//		System.out.println("Decypted: "+Encryption.bytearrayToSting(dec));
+	  
 		return userauthser.getAllUsers();
 	}
  

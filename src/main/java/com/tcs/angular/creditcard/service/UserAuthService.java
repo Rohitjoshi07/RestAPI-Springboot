@@ -18,7 +18,7 @@ public class UserAuthService {
 
 	public List<UserAuthentication> getAllUsers() {
 		
-		//userAuthRepo.save(new UserAuthentication("abc@gmail.com","xyzabc","abc123"));
+		//userAuthRepo.save(new UserAuthentication());
 		return userAuthRepo.findAll();
 	}
 
