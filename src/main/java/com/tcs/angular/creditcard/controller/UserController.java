@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.tcs.angular.creditcard.service.UserService;
+import com.tcs.angular.creditcard.entity.Response;
 import com.tcs.angular.creditcard.entity.UserDetails;
 import com.tcs.angular.creditcard.exceptions.UserNotFoundException;
 
@@ -43,13 +44,13 @@ public class UserController {
 	}
 
 	@PostMapping("/user")
-	public void addUser(@RequestBody UserDetails user) {
-		service.addAnUser(user);
+	public Response addUser(@RequestBody UserDetails user) {
+		return service.addAnUser(user);
 	}
 
 	@PutMapping("/user")
-	public void updateUser(@RequestBody UserDetails user) {
-		service.updateUser(user);
+	public Response updateUser(@RequestBody UserDetails user) {
+		return service.updateUser(user);
 	}
 
 }
