@@ -48,9 +48,9 @@ public class UserController {
 		return service.addAnUser(user);
 	}
 
-	@PutMapping("/user")
-	public Response updateUser(@RequestBody UserDetails user) {
-		return service.updateUser(user);
-	}
+//	@PutMapping("/user")
+//	public Response updateUser(@RequestBody UserDetails user) {
+//		return service.updateUser(user);
+//	}
 
 }

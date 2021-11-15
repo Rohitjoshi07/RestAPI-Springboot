@@ -55,9 +55,10 @@ public class UserService {
 
 	}
 
-	public Response updateUser(UserDetails user) {
-//		userRepo.save(user);
-		return new Response("Bad-Request","User already exists!");
-		
-	}
+//	public Response updateUser(UserDetails user) {
+////		userRepo.save(user);
+//		
+//		return new Response("Bad-Request","User already exists!");
+//
+//	}
 }
