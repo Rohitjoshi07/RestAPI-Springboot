@@ -18,7 +18,7 @@ import com.tcs.angular.creditcard.service.UserService;
 import com.tcs.angular.creditcard.entity.UserDetails;
 import com.tcs.angular.creditcard.exceptions.UserNotFoundException;
 
-@RestController
+@RestController()
 @CrossOrigin()
 public class UserController {
 	@Autowired

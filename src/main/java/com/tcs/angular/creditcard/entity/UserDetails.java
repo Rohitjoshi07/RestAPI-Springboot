@@ -3,8 +3,10 @@ package com.tcs.angular.creditcard.entity;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "userCardDetails")
 public class UserDetails {
 	private String name;
 	@Id
