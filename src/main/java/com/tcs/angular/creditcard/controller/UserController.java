@@ -21,7 +21,7 @@ import com.tcs.angular.creditcard.exceptions.UserNotFoundException;
 
 @RestController()
 // @CrossOrigin()
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "https://global-bank.herokuapp.com/")
 public class UserController {
 	@Autowired
 	UserService service;
