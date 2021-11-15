@@ -43,21 +43,21 @@ public class UserService {
 	}
 
 	public Response addAnUser(UserDetails user) {
-		if (user.getName().isEmpty() || user.getName().isEmpty() || user.getEmail().isEmpty()
-				|| user.getAadharNumber().isEmpty() || user.getDob().isEmpty() || user.getPanNumber().isEmpty()
-				|| user.getUserAddress().isEmpty() || user.getCardType().isEmpty())
-			throw new EmptyInputException();
+
 		if (userRepo.existsById(user.getEmail()) && userRepo.existsById(user.getCardType())) {
 			// throw new UserAlreadyExistException();
 			return new Response("Bad-Request", "user allready exist with same card, Please apply for different card");
-		} else {
+		} 
+		else {
 			userRepo.save(user);
 			return new Response("ok", "Card Added Successfully");
 		}
 
 	}
 
-	public void updateUser(UserDetails user) {
-		userRepo.save(user);
+	public Response updateUser(UserDetails user) {
+//		userRepo.save(user);
+		return new Response("Bad-Request","User already exists!");
+		
 	}
 }
