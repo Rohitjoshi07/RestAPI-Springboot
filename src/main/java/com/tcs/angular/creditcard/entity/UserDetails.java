@@ -19,7 +19,7 @@ public class UserDetails {
 	private String aadharNumber;
 	// @Column(name="Salary Range")
 	private int salaryRange;
-
+	private String userAddress;
 	private String cardType;
 
 	public String getCardType() {
@@ -30,8 +30,6 @@ public class UserDetails {
 		this.cardType = cardType;
 	}
 	// @Column(name="User Address")
-
-	private String userAddress;
 
 	public String getName() {
 		return name;
