@@ -19,7 +19,8 @@ import com.tcs.angular.creditcard.entity.UserDetails;
 import com.tcs.angular.creditcard.exceptions.UserNotFoundException;
 
 @RestController()
-@CrossOrigin()
+// @CrossOrigin()
+@CrossOrigin(origins = "http://localhost:4200")
 public class UserController {
 	@Autowired
 	UserService service;
