@@ -1,6 +1,5 @@
 package com.tcs.angular.creditcard.service;
 
-
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.tcs.angular.creditcard.exceptions.*;
 import com.tcs.angular.creditcard.repository.UserDetailsRepo;
+import com.tcs.angular.creditcard.entity.Response;
 import com.tcs.angular.creditcard.entity.UserDetails;
 
 @Service
@@ -16,55 +16,47 @@ public class UserService {
 	@Autowired
 	UserDetailsRepo userRepo;
 
-	public List<UserDetails> getAllUsers(){
-		// userRepo.save(new UserDetails("Avinash","gadekaraavi@gmail.com","06/11/1997", "7040753196" ,"BCDF4325D","123456782345",2,"raje sambhaji nagar"));
-		userRepo.save(new UserDetails("rohan","abc@gmail.com","20/6/1999","8478561248","QEREk4789J","789456781234",2,"ambica vihar, phase 2, haldwani"));  
+	public List<UserDetails> getAllUsers() {
+		// userRepo.save(new UserDetails("Avinash","gadekaraavi@gmail.com","06/11/1997",
+		// "7040753196" ,"BCDF4325D","123456782345",2,"raje sambhaji nagar"));
+		userRepo.save(new UserDetails("rohan", "abc@gmail.com", "20/6/1999", "8478561248", "QEREk4789J", "789456781234",
+				2, "ambica vihar, phase 2, haldwani", "card1"));
 		return userRepo.findAll();
 	}
-	
+
 	public UserDetails getAnUser(String email) {
-		
-		if(!userRepo.existsById(email))
-		{
+
+		if (!userRepo.existsById(email)) {
 			throw new UserNotFound();
-		}
-		else
-		{
+		} else {
 			return userRepo.findById(email).get();
 		}
 	}
 
 	public void deleteAnUser(String email) {
-		
-		if(!userRepo.existsById(email))
-		{
+
+		if (!userRepo.existsById(email)) {
 			throw new UserNotFound();
-		}
-		else
-		{   
-		    userRepo.deleteById(email);
+		} else {
+			userRepo.deleteById(email);
 		}
 	}
 
-	public void addAnUser(UserDetails user){
-		if(user.getName().isEmpty() || 
-				 user.getName().isEmpty() ||
-				 user.getEmail().isEmpty() || 
-				 user.getAadharNumber().isEmpty() || 
-				 user.getDob().isEmpty() ||
-				 user.getPanNumber().isEmpty() || 
-				 user.getUserAddress().isEmpty())                 
-		throw new EmptyInputException();
-		if(userRepo.existsById(user.getEmail()))
-		{
-			throw new UserAlreadyExistException();
+	public Response addAnUser(UserDetails user) {
+		if (user.getName().isEmpty() || user.getName().isEmpty() || user.getEmail().isEmpty()
+				|| user.getAadharNumber().isEmpty() || user.getDob().isEmpty() || user.getPanNumber().isEmpty()
+				|| user.getUserAddress().isEmpty() || user.getCardType().isEmpty())
+			throw new EmptyInputException();
+		if (userRepo.existsById(user.getEmail()) && userRepo.existsById(user.getCardType())) {
+			// throw new UserAlreadyExistException();
+			return new Response("Bad-Request", "user allready exist with same card, Please apply for different card");
+		} else {
+			userRepo.save(user);
+			return new Response("ok", "Card Added Successfully");
 		}
-		else {
-		userRepo.save(user);
-		}
-	
+
 	}
-	
+
 	public void updateUser(UserDetails user) {
 		userRepo.save(user);
 	}
