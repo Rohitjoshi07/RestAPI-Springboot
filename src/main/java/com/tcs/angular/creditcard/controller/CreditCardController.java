@@ -18,7 +18,7 @@ import com.tcs.angular.creditcard.entity.Response;
 import com.tcs.angular.creditcard.service.CreditCardService;                                       
                                                                                                    
 @RestController
-@CrossOrigin()
+@CrossOrigin(origins = "*",maxAge=3600)
 @RequestMapping("/card")
 public class CreditCardController {                                                                
 	                                                                                               

@@ -18,7 +18,7 @@ import com.tcs.angular.creditcard.entity.*;
 import com.tcs.angular.creditcard.service.*;
 
 @RestController()
-@CrossOrigin()
+@CrossOrigin(origins = "*",maxAge=3600)
 @RequestMapping("/userAuth")
 public class UserAuthController {
    

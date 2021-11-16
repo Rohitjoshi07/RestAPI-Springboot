@@ -20,8 +20,8 @@ import com.tcs.angular.creditcard.entity.UserDetails;
 import com.tcs.angular.creditcard.exceptions.UserNotFoundException;
 
 @RestController()
-// @CrossOrigin()
-@CrossOrigin(origins = "https://global-bank.herokuapp.com/")
+@CrossOrigin(origins = "*",maxAge=3600)
+
 public class UserController {
 	@Autowired
 	UserService service;
