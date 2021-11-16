@@ -25,7 +25,7 @@ import com.tcs.angular.creditcard.util.JWTTokenUtil;
 
 
 @RestController
-@CrossOrigin(origins = "https://global-bank.herokuapp.com/",maxAge=3600)
+@CrossOrigin(origins = "*",maxAge=3600)
 @RequestMapping("")
 public class JwtAuthenticationController {
 
