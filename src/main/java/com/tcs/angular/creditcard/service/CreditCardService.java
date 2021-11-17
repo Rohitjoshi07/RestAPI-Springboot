@@ -2,6 +2,8 @@ package com.tcs.angular.creditcard.service;
 
 
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,38 +32,41 @@ public class CreditCardService {
 //	
 	
 	public Response verifyUser(String userid, String cardType) {
-		CreditCard[] data = cardRepo.findAllByuserid(userid);
+		Optional<CreditCard> data = cardRepo.findById(userid);
 		
-		if (data.length ==0) {
+		if (!data.isPresent()) {
 			Response res = new Response("true","No cards found!");
 			return res;
 		}
 		else {
-			for (CreditCard creditCard : data) {
-				if (creditCard.getType().equals(cardType)) {
-					Response res = new Response("false",cardType+" card has already been issued!");
-					return res;
+			CreditCard creditCard = data.get();
+			if (creditCard.getType().equals(cardType)) {
+				Response res = new Response("false",cardType+" card has already been issued!");
+				return res;
 				}
 			}
 			Response res = new Response("true","No "+cardType+" cards found!");
 			return res;
 		}
 
-	}
 	
-	public CardResponse getCardforUserid(String userid) {
-		CreditCard[] carddata = cardRepo.findAllByuserid(userid);
-		if (carddata.length==0) {
+	
+	public CardResponse getCardforUserid(String userpan) {
+		Optional<CreditCard> cardd = cardRepo.findById(userpan);
+		if (!cardd.isPresent()) {
 			CardResponse res = new CardResponse("false","No cards found!");
 			return res;
 		}
 		else {
-			byte[] cardnum = carddata[0].getCardNumber();
+			CreditCard carddata = cardd.get();
+			System.out.println(carddata);
+			
+			byte[] cardnum = carddata.getCardNumber();
 			String cardnumdecrypt = Encryption.bytearrayToSting((Encryption.decrypt(cardnum)));
-			String cardcvvdecrypt = Encryption.bytearrayToSting(Encryption.decrypt(carddata[0].getCvv()));
+			String cardcvvdecrypt = Encryption.bytearrayToSting(Encryption.decrypt(carddata.getCvv()));
+			String cardType = carddata.getType();
 			
-			
-			CardRequest req = new CardRequest(cardnumdecrypt, carddata[0].getExpiry(),cardcvvdecrypt, carddata[0].getFirstname(), carddata[0].getLastname() );
+			CardRequest req = new CardRequest(cardnumdecrypt, carddata.getExpiry(),cardcvvdecrypt, carddata.getFirstname(), carddata.getLastname(), cardType );
 			
 			CardResponse res = new CardResponse("true", "Card sent!",req);
 			return res;
@@ -71,27 +76,26 @@ public class CreditCardService {
 	
 	
 	public Response checkUserforCards(String userid) {
-		CreditCard[] data = cardRepo.findAllByuserid(userid);
-		StringBuffer cards = new StringBuffer();
+		Optional<CreditCard> data = cardRepo.findById(userid);
 		
-		if (data.length ==0) {
+		
+		if (!data.isPresent()) {
 			Response res = new Response("true","No cards found!");
 			return res;
 		}
 		else {
 			
-			for (CreditCard creditCard : data) {
-				cards.append(creditCard.getType()+" ");
-				}
-			}
-		
-		
-			Response res = new Response("false",cards.toString()+" already created");
-			return res;
-		}
+				CreditCard card = data.get();
+				
+				Response res = new Response("false",card.getType()+" already created");
+				return res;
 
-	public Response generateCardForUser(UserDetails userdetails, String cardType) {
+		}
+	}
+
+	public Response generateCardForUser(UserDetails userdetails) {
 		
+		String cardType = userdetails.getCardType();
 		String userid = userdetails.getPanNumber();
 		String[] name = userdetails.getName().split(" ");
 		String fname= name[0];

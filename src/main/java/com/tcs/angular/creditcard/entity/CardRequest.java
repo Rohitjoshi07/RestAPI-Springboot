@@ -7,8 +7,15 @@ public class CardRequest {
 	private String cvv;
 	private String fname;
 	private String lname;
+	private String cardType;
 	
 	
+	public String getCardType() {
+		return cardType;
+	}
+	public void setCardType(String cardType) {
+		this.cardType = cardType;
+	}
 	public String getCardnum() {
 		return cardnum;
 	}
@@ -45,12 +52,13 @@ public class CardRequest {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public CardRequest(String cardnum, String expiry, String cvv, String fname, String lname) {
+	public CardRequest(String cardnum, String expiry, String cvv, String fname, String lname, String cardTypes) {
 		super();
 		this.cardnum = cardnum;
 		this.expiry = expiry;
 		this.cvv = cvv;
 		this.fname = fname;
 		this.lname = lname;
+		this.cardType=cardType;
 	}
 }

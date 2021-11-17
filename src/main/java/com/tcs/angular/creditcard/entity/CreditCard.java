@@ -14,13 +14,14 @@ import org.hibernate.annotations.Type;
 public class CreditCard {
 
 	@Id
+	@Column(name ="userpan")
+	private String userid;
+	
 	@Column(name="cardNumber")
 	@Lob
 	@Type(type = "org.hibernate.type.BinaryType")
 	private byte[] cardNumber;
 	
-	@Column(name ="userpan")
-	private String userid;
 	
 	
 	@Column(name="firstname")

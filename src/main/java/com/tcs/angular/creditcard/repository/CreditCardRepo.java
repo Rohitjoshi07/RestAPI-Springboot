@@ -4,9 +4,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.tcs.angular.creditcard.entity.CreditCard;
 
-public interface CreditCardRepo extends JpaRepository<CreditCard, byte[]>{
+public interface CreditCardRepo extends JpaRepository<CreditCard, String>{
 
-	public CreditCard[] findAllByuserid(String userid);
+	
 
 	
 }

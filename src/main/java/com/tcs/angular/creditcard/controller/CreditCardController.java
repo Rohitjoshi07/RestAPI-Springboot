@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.tcs.angular.creditcard.entity.CCHelper;
 import com.tcs.angular.creditcard.entity.CardResponse;
 import com.tcs.angular.creditcard.entity.Response;
+import com.tcs.angular.creditcard.entity.UserDetails;
 import com.tcs.angular.creditcard.service.CreditCardService;                                       
                                                                                                    
 @RestController
@@ -32,8 +33,8 @@ public class CreditCardController {
 //	}
 	
 	@PostMapping("/generate")
-	public Response generateCard(@RequestBody CCHelper helper) {
-		return cardService.generateCardForUser(helper.getUserdetails(), helper.getCardType());
+	public Response generateCard(@RequestBody UserDetails helper) {
+		return cardService.generateCardForUser(helper);
 	}
 		
 	                                                                                               

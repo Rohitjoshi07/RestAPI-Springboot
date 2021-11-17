@@ -50,7 +50,7 @@ public class UserService {
 		} 
 		else {
 			userRepo.save(user);
-			return new Response("ok", "Card Added Successfully");
+			return new Response("ok", "Card generated Successfully! Please check on mycards.");
 		}
 
 	}
