@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.tcs.angular.creditcard.entity.CCHelper;
+import com.tcs.angular.creditcard.entity.CardResponse;
 import com.tcs.angular.creditcard.entity.Response;
 import com.tcs.angular.creditcard.service.CreditCardService;                                       
                                                                                                    
@@ -30,7 +31,7 @@ public class CreditCardController {
 //		return cardService.addCard(carddata);                                                      
 //	}
 	
-	@PostMapping("/generate/")
+	@PostMapping("/generate")
 	public Response generateCard(@RequestBody CCHelper helper) {
 		return cardService.generateCardForUser(helper.getUserdetails(), helper.getCardType());
 	}
@@ -47,9 +48,9 @@ public class CreditCardController {
 	}
 	                                                                                               
 //	                                                                                               
-//	@GetMapping("/card")                                                                           
-//	public List<CreditCard> getAllCards(){                                                         
-//		return cardService.getAll();                                                               
-//	}                                                                                              
+	@GetMapping("/getcard")                                                                           
+	public CardResponse getAllCards(@RequestParam(defaultValue="empty") String userid){                                                         
+		return cardService.getCardforUserid(userid);                                                               
+	}                                                                                              
 }                                                                                                  
                                                                                                    

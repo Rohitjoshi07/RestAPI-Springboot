@@ -6,6 +6,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.tcs.angular.creditcard.entity.CardRequest;
+import com.tcs.angular.creditcard.entity.CardResponse;
 import com.tcs.angular.creditcard.entity.CreditCard;
 import com.tcs.angular.creditcard.entity.Response;
 import com.tcs.angular.creditcard.entity.UserDetails;
@@ -47,6 +49,27 @@ public class CreditCardService {
 
 	}
 	
+	public CardResponse getCardforUserid(String userid) {
+		CreditCard[] carddata = cardRepo.findAllByuserid(userid);
+		if (carddata.length==0) {
+			CardResponse res = new CardResponse("false","No cards found!");
+			return res;
+		}
+		else {
+			byte[] cardnum = carddata[0].getCardNumber();
+			String cardnumdecrypt = Encryption.bytearrayToSting((Encryption.decrypt(cardnum)));
+			String cardcvvdecrypt = Encryption.bytearrayToSting(Encryption.decrypt(carddata[0].getCvv()));
+			
+			
+			CardRequest req = new CardRequest(cardnumdecrypt, carddata[0].getExpiry(),cardcvvdecrypt, carddata[0].getFirstname(), carddata[0].getLastname() );
+			
+			CardResponse res = new CardResponse("true", "Card sent!",req);
+			return res;
+		}
+		
+	}
+	
+	
 	public Response checkUserforCards(String userid) {
 		CreditCard[] data = cardRepo.findAllByuserid(userid);
 		StringBuffer cards = new StringBuffer();
@@ -57,14 +80,13 @@ public class CreditCardService {
 		}
 		else {
 			
-			
 			for (CreditCard creditCard : data) {
-				cards.append(creditCard.getType()+", ");
+				cards.append(creditCard.getType()+" ");
 				}
 			}
 		
 		
-			Response res = new Response("true",cards.toString());
+			Response res = new Response("false",cards.toString()+" already created");
 			return res;
 		}
 
@@ -82,8 +104,9 @@ public class CreditCardService {
 		String baddress = userdetails.getUserAddress();
 		
 		//validate for given card
-		Response chkres = verifyUser(userid, cardType);
-		if (chkres.getMessage().equals(cardType+" card has already been issued!")) {
+		//Response chkres = verifyUser(userid, cardType);
+		Response chkres = checkUserforCards(userid);
+		if (chkres.getStatus()=="false") {
 			return chkres;
 		}
 		
@@ -102,8 +125,6 @@ public class CreditCardService {
 			String cardcvv =  cardprocess.generateCVV();
 			byte[] cardcvvEnc = Encryption.encrypt(Encryption.stringToByte(cardcvv));
 			
-			//dummycheck
-			System.out.println("cardno: "+cardno+" cardexpiry: "+cardexpiry+" cardcvv: "+cardcvv);
 			//store card
 			CreditCard carddetails = new CreditCard(cardnoEnc, userid, fname, lname, cardType, baddress,cardcvvEnc, cardexpiry);
 			
