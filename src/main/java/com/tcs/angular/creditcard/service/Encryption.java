@@ -6,7 +6,7 @@ import org.springframework.security.crypto.keygen.KeyGenerators;
 
 public abstract class Encryption {
 	static final String password = "Blobal Gank Security Pass"; 
-	static final String salt = KeyGenerators.string().generateKey();
+	static final String salt = "1a15347647a4a7e7";  //KeyGenerators.string().generateKey();
 	
 	public static byte[] stringToByte(String val) {
 		byte[] barray = val.getBytes();
@@ -35,3 +35,4 @@ public abstract class Encryption {
 	}
 	
 }
+

@@ -1,8 +1,6 @@
 package com.tcs.angular.creditcard.service;
 
 
-import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -161,6 +159,7 @@ public class CreditCardService {
 			return res;
 			
 		}
+		
 		else if (cardType.equals("PLATINUM") && (srange==4 || srange==3)) {
 			
 			//generate card
@@ -216,8 +215,9 @@ public class CreditCardService {
 			return res;
 		}
 	}
-	
+
 }
+
 //	public List<CreditCard> getAll(){
 //
 //		List<CreditCard> data = cardRepo.findAll();

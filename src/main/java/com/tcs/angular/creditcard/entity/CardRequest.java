@@ -52,13 +52,13 @@ public class CardRequest {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public CardRequest(String cardnum, String expiry, String cvv, String fname, String lname, String cardTypes) {
+	public CardRequest(String cardnum, String expiry, String cvv, String fname, String lname, String cardType) {
 		super();
 		this.cardnum = cardnum;
 		this.expiry = expiry;
 		this.cvv = cvv;
 		this.fname = fname;
 		this.lname = lname;
-		this.cardType=cardType;
+		this.cardType= cardType;
 	}
 }
