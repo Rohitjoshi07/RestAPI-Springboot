@@ -5,7 +5,7 @@ public class CardResponse {
 
 	private String status;
 	private String message;
-	private CardRequest carddata;
+	private CardRequest[] carddata;
 	
 	
 	public String getStatus() {
@@ -20,10 +20,10 @@ public class CardResponse {
 	public void setMessage(String message) {
 		this.message = message;
 	}
-	public CardRequest getCarddata() {
+	public CardRequest[] getCarddata() {
 		return carddata;
 	}
-	public void setCarddata(CardRequest carddata) {
+	public void setCarddata(CardRequest[] carddata) {
 		this.carddata = carddata;
 	}
 
@@ -33,7 +33,7 @@ public class CardResponse {
 		this.message = message;
 	}
 	
-	public CardResponse(String status, String message, CardRequest carddata) {
+	public CardResponse(String status, String message, CardRequest[] carddata) {
 		super();
 		this.status = status;
 		this.message = message;

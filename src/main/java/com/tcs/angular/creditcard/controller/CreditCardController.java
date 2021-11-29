@@ -50,8 +50,8 @@ public class CreditCardController {
 	                                                                                               
 //	                                                                                               
 	@GetMapping("/getcard")                                                                           
-	public CardResponse getAllCards(@RequestParam(defaultValue="empty") String userid){                                                         
-		return cardService.getCardforUserid(userid);                                                               
+	public CardResponse getAllCards(@RequestParam(defaultValue="empty") String id){                                                         
+		return cardService.getCardforUserid(id);                                                               
 	}                                                                                              
 }                                                                                                  
                                                                                                    
