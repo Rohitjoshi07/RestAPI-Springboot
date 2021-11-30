@@ -9,6 +9,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -19,12 +20,13 @@ import com.tcs.angular.creditcard.entity.Response;
 import com.tcs.angular.creditcard.repository.CreditCardImageRepo;
 
 @RestController
+@RequestMapping("/image")
 class ImageController {
 
     @Autowired
     CreditCardImageRepo imageDbRepository;
 
-    @PostMapping
+    @PostMapping("/upload")
     public Response uploadImage(@RequestParam MultipartFile multipartImage) throws Exception {
     	CreditCardImage dbImage = new CreditCardImage();
        dbImage.setCardType(multipartImage.getName());
@@ -32,14 +34,14 @@ class ImageController {
 
         return new  Response("ok","Card Image Uploaded!");
     }
-    
-    @GetMapping(value = "/image/{cardType}", produces = MediaType.IMAGE_JPEG_VALUE)
-    ByteArrayResource downloadImage(@PathVariable String cardType) {
+    /*
+    @GetMapping(value = "/{cardType}", produces = MediaType.IMAGE_JPEG_VALUE)
+    public ByteArrayResource downloadImage(@PathVariable String cardType) {
         byte[] image = imageDbRepository.findById(cardType)
           .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND))
           .getCreditCardImage();
 
         return new ByteArrayResource(image);
     }
-    
+    */
 }

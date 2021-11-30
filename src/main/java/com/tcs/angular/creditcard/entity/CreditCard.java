@@ -14,8 +14,6 @@ import org.hibernate.annotations.Type;
 public class CreditCard {
 
 	
-
-	
 	@Id
 	@Column(name="cardNumber")
 	@Lob

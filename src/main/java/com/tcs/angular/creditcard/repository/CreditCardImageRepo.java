@@ -1,11 +1,13 @@
 package com.tcs.angular.creditcard.repository;
 
-import java.math.BigInteger;
+
+
+
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.tcs.angular.creditcard.entity.CreditCardImage;
+import com.tcs.angular.creditcard.entity.ImageFile;
 
-public interface CreditCardImageRepo extends JpaRepository<CreditCardImage, String> {
-
+public interface CreditCardImageRepo extends JpaRepository<ImageFile, String> {
+	
 }

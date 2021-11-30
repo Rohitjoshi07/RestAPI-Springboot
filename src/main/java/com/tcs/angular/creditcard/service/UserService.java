@@ -46,7 +46,7 @@ public class UserService {
 
 		if (userRepo.existsById(user.getEmail()) && userRepo.existsById(user.getCardType())) {
 			// throw new UserAlreadyExistException();
-			return new Response("Bad-Request", "user allready exist with same card, Please apply for different card");
+			return new Response("Bad-Request", "user already exist with same card, Please apply for different card");
 		} 
 		else {
 			userRepo.save(user);

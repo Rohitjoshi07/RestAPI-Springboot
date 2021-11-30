@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.tcs.angular.creditcard.entity.CreditCardDetails;
+import com.tcs.angular.creditcard.entity.Response;
 import com.tcs.angular.creditcard.repository.CreditCardDetailsRepo;
 
 @Service
@@ -34,4 +35,15 @@ public class CreditCardDetailsService {
 		return repo.findAll();
 		
 	}
+	
+	public Response saveDetails(CreditCardDetails details) {
+		if (repo.existsById( details.getCreditCardName())) {
+			return new Response("false",details.getCreditCardName()+"details already exists.");
+	}
+		else {
+			repo.save(details);
+			return new Response("true","Details saved!");
+		}
+}
+
 }

@@ -50,6 +50,12 @@ public class CreditCardImage {
 		this.creditCardImage = creditCardImage;
 		this.cardType = cardType;
 	}
+	public CreditCardImage(byte[] creditCardImage) {
+		super();
+		
+		this.creditCardImage = creditCardImage;
+		
+	}
 	
 
 		
